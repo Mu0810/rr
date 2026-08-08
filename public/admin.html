@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Applications — Rocket Recruiters</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800;900&family=Archivo+Black&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<style>
+  body { background: #101210; color: #eef0e8; }
+  ::selection { background: var(--lime); color: #101210; }
+
+  .shell { max-width: 1320px; margin: 0 auto; padding: 22px clamp(14px, 3vw, 32px) 70px; }
+
+  /* login */
+  .gate { min-height: 100svh; display: grid; place-items: center; padding: 24px; }
+  .gate__card {
+    width: min(400px, 100%); padding: 34px 30px; background: #171a16;
+    border: 2px solid #2c3128; border-radius: 6px;
+  }
+  .gate__title {
+    font-family: var(--display); font-size: 1.5rem; text-transform: uppercase;
+    letter-spacing: -.02em; margin-bottom: 6px;
+  }
+  .gate__sub { font-size: 13px; color: #8d9484; margin-bottom: 22px; }
+  .gate input {
+    background: #101210; border-color: #2c3128; color: #eef0e8; margin-bottom: 14px;
+  }
+  .gate input:focus { border-color: var(--lime); background: #101210; box-shadow: 0 0 0 4px rgba(200,240,76,.18); }
+  .gate .btn { width: 100%; border-color: var(--lime); background: var(--lime); color: #101210; }
+  .gate__hint { font-size: 11.5px; color: #6f7568; margin-top: 16px; line-height: 1.5; }
+
+  /* header */
+  .top {
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    flex-wrap: wrap; padding: 16px 0 20px; border-bottom: 1px solid #262a22; margin-bottom: 22px;
+  }
+  .top__title { font-family: var(--display); font-size: 1.35rem; text-transform: uppercase; letter-spacing: -.02em; }
+  .top__sub { font-size: 12px; color: #8d9484; margin-top: 3px; }
+  .top__actions { display: flex; gap: 9px; flex-wrap: wrap; }
+  .mini {
+    border: 1.5px solid #3a4033; background: transparent; color: #eef0e8; border-radius: 999px;
+    padding: 8px 15px; font-family: var(--font); font-size: 12px; font-weight: 700;
+    letter-spacing: .05em; text-transform: uppercase; cursor: pointer; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 7px; transition: all .2s var(--ease);
+  }
+  .mini:hover { border-color: var(--lime); color: var(--lime); transform: translateY(-1px); }
+  .mini--go { background: var(--lime); border-color: var(--lime); color: #101210; }
+  .mini--go:hover { color: #101210; filter: brightness(1.08); }
+
+  /* delivery health */
+  .delivery-banner {
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    flex-wrap: wrap; margin-bottom: 16px; padding: 13px 17px; font-size: 13.5px;
+    background: #2a2113; border: 1px solid #6b5320; border-left: 3px solid #d9a419;
+    border-radius: 5px; color: #f0e3c4;
+  }
+
+  /* stats */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 11px; margin-bottom: 22px; }
+  .stat { padding: 15px 17px; background: #171a16; border: 1px solid #262a22; border-radius: 5px; }
+  .stat__n { font-family: var(--display); font-size: 1.85rem; line-height: 1; letter-spacing: -.03em; }
+  .stat__k { font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: #8d9484; margin-top: 6px; }
+  .stat--hot .stat__n { color: var(--lime); }
+
+  /* filters */
+  .filters { display: flex; gap: 9px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; }
+  .filters input, .filters select {
+    background: #171a16; border-color: #2c3128; color: #eef0e8; padding: 10px 13px; font-size: 14px; width: auto;
+  }
+  .filters input { min-width: 230px; }
+  .filters select { min-width: 165px; }
+  .filters input:focus, .filters select:focus { border-color: var(--lime); background: #171a16; box-shadow: 0 0 0 3px rgba(200,240,76,.16); }
+  .filters select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23eef0e8' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  }
+
+  /* table */
+  .table-wrap { border: 1px solid #262a22; border-radius: 5px; overflow: auto; background: #171a16; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  thead th {
+    position: sticky; top: 0; z-index: 1; text-align: left; padding: 12px 14px;
+    background: #1d2119; font-size: 10.5px; letter-spacing: .13em; text-transform: uppercase;
+    color: #8d9484; font-weight: 700; white-space: nowrap; border-bottom: 1px solid #262a22;
+  }
+  tbody tr { border-bottom: 1px solid #21251d; cursor: pointer; transition: background .16s var(--ease); }
+  tbody tr:hover { background: #1e221a; }
+  tbody tr.is-open { background: #232819; box-shadow: inset 3px 0 0 var(--lime); }
+  tbody td { padding: 12px 14px; vertical-align: middle; }
+  .cell-name { font-weight: 700; }
+  .cell-sub { font-size: 11.5px; color: #8d9484; margin-top: 2px; }
+  .cell-ref { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; color: #8d9484; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  .pill {
+    display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 10.5px;
+    font-weight: 800; letter-spacing: .09em; text-transform: uppercase; white-space: nowrap;
+  }
+  .pill--new { background: var(--lime); color: #101210; }
+  .pill--reviewing { background: #3d4a8f; color: #eef0e8; }
+  .pill--shortlisted { background: #1f6f45; color: #eef0e8; }
+  .pill--interviewing { background: #8a6412; color: #fff; }
+  .pill--rejected { background: #38302e; color: #a09892; }
+  .pill--hired { background: #eef0e8; color: #101210; }
+  .pill--cat { background: #262c20; color: #b9c2ac; }
+
+  .empty { padding: 54px 22px; text-align: center; color: #8d9484; font-size: 14px; }
+
+  .pager { display: flex; align-items: center; gap: 12px; justify-content: flex-end; margin-top: 14px; font-size: 12.5px; color: #8d9484; }
+
+  /* detail drawer */
+  .drawer {
+    position: fixed; inset: 0 0 0 auto; width: min(560px, 100%); z-index: 95;
+    background: #14170f; border-left: 2px solid #2c3128; overflow-y: auto;
+    transform: translateX(100%); transition: transform .4s var(--ease);
+    box-shadow: -24px 0 60px -20px rgba(0,0,0,.7);
+  }
+  .drawer.is-open { transform: none; }
+  .drawer__head {
+    position: sticky; top: 0; background: #14170f; padding: 20px 24px 16px;
+    border-bottom: 1px solid #262a22; display: flex; justify-content: space-between; gap: 12px; align-items: flex-start;
+  }
+  .drawer__name { font-family: var(--display); font-size: 1.3rem; text-transform: uppercase; letter-spacing: -.02em; }
+  .drawer__meta { font-size: 12px; color: #8d9484; margin-top: 5px; }
+  .drawer__close {
+    border: 1.5px solid #3a4033; background: transparent; color: #eef0e8; border-radius: 50%;
+    width: 32px; height: 32px; font-size: 17px; line-height: 1; cursor: pointer; flex: none;
+  }
+  .drawer__close:hover { border-color: var(--lime); color: var(--lime); }
+  .drawer__body { padding: 20px 24px 40px; }
+  .drawer__actions { display: flex; gap: 9px; flex-wrap: wrap; margin-bottom: 22px; }
+  .drawer__group { margin-bottom: 22px; }
+  .drawer__group h4 {
+    font-size: 10.5px; letter-spacing: .15em; text-transform: uppercase; color: #8d9484;
+    margin: 0 0 10px; padding-bottom: 7px; border-bottom: 1px solid #262a22;
+  }
+  .kv { display: grid; grid-template-columns: minmax(130px, 38%) 1fr; gap: 8px 14px; font-size: 13.5px; }
+  .kv dt { color: #8d9484; }
+  .kv dd { margin: 0; word-break: break-word; }
+  .kv dd a { color: var(--lime); }
+  .kv dd.long { grid-column: 1 / -1; padding: 11px 13px; background: #1a1e15; border-radius: 4px; border-left: 2px solid var(--lime); line-height: 1.55; }
+  .drawer select, .drawer textarea {
+    background: #1a1e15; border-color: #2c3128; color: #eef0e8; font-size: 13.5px;
+  }
+  .drawer select:focus, .drawer textarea:focus { border-color: var(--lime); background: #1a1e15; box-shadow: 0 0 0 3px rgba(200,240,76,.16); }
+  .drawer label.lbl { display: block; font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: #8d9484; margin-bottom: 7px; }
+  .saved { font-size: 12px; color: var(--lime); margin-left: 8px; opacity: 0; transition: opacity .3s; }
+  .saved.show { opacity: 1; }
+
+  .scrim {
+    position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 94;
+    opacity: 0; pointer-events: none; transition: opacity .3s var(--ease);
+  }
+  .scrim.is-open { opacity: 1; pointer-events: auto; }
+
+  @media (max-width: 720px) {
+    .hide-sm { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- login gate -->
+<div class="gate" id="gate" hidden>
+  <form class="gate__card" id="loginForm">
+    <h1 class="gate__title">Rocket<span style="color:var(--lime)">Recruiters</span></h1>
+    <p class="gate__sub">Applications dashboard — Hack Daily mandate.</p>
+    <label class="lbl" for="pw" style="display:block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#8d9484;margin-bottom:7px">Password</label>
+    <input type="password" id="pw" name="password" autocomplete="current-password" required>
+    <p class="error" id="loginError" hidden></p>
+    <button class="btn" type="submit">Sign in</button>
+    <p class="gate__hint">
+      The password was printed in the server console on first run. Set
+      <code>ADMIN_PASSWORD</code> to choose your own.
+    </p>
+  </form>
+</div>
+
+<!-- dashboard -->
+<main class="shell" id="app" hidden>
+  <div class="top">
+    <div>
+      <h1 class="top__title">Applications</h1>
+      <p class="top__sub">Rocket Recruiters × Hack Daily · live inbox</p>
+    </div>
+    <div class="top__actions">
+      <a class="mini" href="/" target="_blank" rel="noopener">View portal ↗</a>
+      <a class="mini mini--go" id="exportBtn" href="/api/admin/export.csv">Export CSV</a>
+      <button class="mini" id="logoutBtn" type="button">Sign out</button>
+    </div>
+  </div>
+
+  <div class="delivery-banner" id="deliveryBanner" role="status" hidden></div>
+
+  <section class="stats" id="stats"></section>
+
+  <div class="filters">
+    <input type="search" id="q" placeholder="Search name, email, phone, ref…" aria-label="Search applications">
+    <select id="filterCategory" aria-label="Filter by track"><option value="">All tracks</option></select>
+    <select id="filterStatus" aria-label="Filter by status"><option value="">All statuses</option></select>
+    <button class="mini" id="resetBtn" type="button">Reset</button>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Candidate</th>
+          <th>Track</th>
+          <th class="hide-sm">Exp</th>
+          <th class="hide-sm">Expected</th>
+          <th class="hide-sm">Notice</th>
+          <th>Status</th>
+          <th class="hide-sm">Applied</th>
+          <th>CV</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <p class="empty" id="empty" hidden>No applications match these filters yet.</p>
+  </div>
+
+  <div class="pager">
+    <span id="pageInfo"></span>
+    <button class="mini" id="prevPage" type="button">Prev</button>
+    <button class="mini" id="nextPage" type="button">Next</button>
+  </div>
+</main>
+
+<div class="scrim" id="scrim"></div>
+
+<aside class="drawer" id="drawer" aria-label="Application detail" aria-hidden="true">
+  <div class="drawer__head">
+    <div>
+      <p class="drawer__name" id="dName">—</p>
+      <p class="drawer__meta" id="dMeta"></p>
+    </div>
+    <button class="drawer__close" id="dClose" type="button" aria-label="Close">×</button>
+  </div>
+  <div class="drawer__body" id="dBody"></div>
+</aside>
+
+<script src="/admin.js" type="module"></script>
+</body>
+</html>

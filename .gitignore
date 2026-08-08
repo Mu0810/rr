@@ -1,0 +1,16 @@
+# Candidate data — never commit
+data/
+uploads/
+*.db
+*.db-wal
+*.db-shm
+
+# Secrets
+.env
+.env.local
+
+node_modules/
+.DS_Store
+
+# Pre-filled Apps Script copy — carries a real shared secret
+google-apps-script/Code.local.gs

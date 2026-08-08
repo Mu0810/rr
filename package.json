@@ -1,0 +1,17 @@
+{
+  "name": "rocket-recruiters-portal",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Candidate application portal — Rocket Recruiters x Hack Daily",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "start:env": "node --env-file=.env src/server.js",
+    "dev": "node --watch --env-file-if-exists=.env src/server.js",
+    "notify:test": "node --env-file=.env scripts/notify-test.js",
+    "test": "node --test \"test/**/*.test.js\""
+  }
+}
